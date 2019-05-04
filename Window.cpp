@@ -1,89 +1,89 @@
-#include "window.hpp"
+#include "Window.h"
 
 Window::Window()
 {
- setup("Window", sf::Vector2u(640, 480));
+  Setup("Window", sf::Vector2u(640, 480));
 }
 
 Window::Window(const std::string& title, const sf::Vector2u& size)
 {
-  setup(title, size);
+  Setup(title, size);
 }
 
 Window::~Window()
 {
-  destroy();
+  Destroy();
 }
 
 void Window::Setup(const std::string title, const sf::Vector2u& size)
 {
   m_windowTitle = title;
   m_windowSize = size;
-  m_isFullScreen = false;
+  m_isFullscreen = false;
   m_isDone = false;
-  create();
+  Create();
 }
 
-void Window::create()
+void Window::Create()
 {
-  auto style = (m_isFullScreen ? sf::Style::FullScreen
+  auto style = (m_isFullscreen ? sf::Style::Fullscreen
 		: sf::Style::Default);
   m_window.create({ m_windowSize.x, m_windowSize.y, 32 },
 		  m_windowTitle, style);
 }
 
-void Window::destroy()
+void Window::Destroy()
 {
   m_window.close();
 }
 
-void Window::beginDraw()
+void Window::BeginDraw()
 {
   m_window.clear(sf::Color::Black);
 }
 
-void Window::endDraw()
+void Window::EndDraw()
 {
   m_window.display();
 }
 
-bool Window::isDone()
+bool Window::IsDone()
 {
   return m_isDone;
 }
 
-bool Window::isFullScreen()
+bool Window::IsFullscreen()
 {
-  return m_isFullScreen;
+  return m_isFullscreen;
 }
 
-sf::RenderWindow* Window::getRenderWindow()
+sf::RenderWindow* Window::GetRenderWindow()
 {
   return &m_window;
 }
 
-sf::Vector2u Window::getWindowSize()
+sf::Vector2u Window::GetWindowSize()
 {
   return m_windowSize;
 }
 
-void Window::toggleFullScreen()
+void Window::ToggleFullscreen()
 {
   m_isFullscreen = !m_isFullscreen;
   m_window.close();
-  create();
+  Create();
 }
 
-void Window::update()
+void Window::Update()
 {
   sf::Event event;
   while(m_window.pollEvent(event))
     {
       if(event.type == sf::Event::Closed)
 	m_isDone = true; 
-    else if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
-      m_isDone = true;
-    else if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::F5)
-      toggleFullScreen(); 
+      else if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
+	m_isDone = true; 
+      else if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::F5)
+	ToggleFullscreen(); 
     }
 }
